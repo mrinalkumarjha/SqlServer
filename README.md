@@ -44,3 +44,16 @@
           commit tran t1 -- only outer commit will physically commit
           PRINT  @@trancount
 
+# Concurrency : 
+      concurrency are the situation where two user tries to access same information. so we donot want any inconsitent result or abnormal behaviour.
+      
+    -- Concurrency
+    -- in below example within 10 sec if someone try to get this info he will get some abnormal result. 
+    -- so we want here not to show uncommited data to end user. we want to show only commited data. so we want here to 
+    -- lock the record with id 22 exclusively
+
+    begin tran
+      update customer set name = 'karan1' where id = 22
+      waitfor delay '00:00:10' -- delay for 10 sec
+      update customer set name = 'mk2' where id = 22
+    rollback tran
